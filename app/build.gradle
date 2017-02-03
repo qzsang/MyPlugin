@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.qzsang.myplugin"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    testCompile 'junit:junit:4.12'
+}
+
+
+
+//使用本地的插件
+buildscript {
+    repositories {
+        maven {//本地Maven仓库地址
+            url uri('/Users/quezhongsang/Downloads/MyPlugin/maven')
+        }
+    }
+    dependencies {
+        //格式为-->group:module:version
+        classpath 'com.hc.plugin:plugin1:1.0.0'
+    }
+}
+//com.hc.gradle为plugin1/src/main/resources/META-INF/gradle-plugins
+//下的properties文件名称
+apply plugin: 'com.hc.gradle'
+
+//本地插件测试
+apply plugin: com.hc.second.SecondPlugin
